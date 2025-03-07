@@ -1,31 +1,31 @@
 'use client'
-import React, { useState } from 'react'
+import React, { createContext, ReactNode } from 'react';
+import useLocalStorage from '@/lib/useLocalStorage';
 
-interface Task{
-    id: Number,
-    text: String,
+interface Task {
+  id: number;
+  text: string;
 }
 
 interface TaskContextType {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-  taskId: number | null;
-  setTaskId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const TaskReadContext = React.createContext<TaskContextType | undefined>(undefined);
+// Create the context with a default value
+export const TaskReadContext = createContext<TaskContextType | null>(null);
 
-const TaskReadContextProvider = ({children}: React.PropsWithChildren) => {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [taskId, setTaskId] = useState<number | null>(null);
-
-  // alert(taskId);
-
-  return<TaskReadContext.Provider value={{tasks, setTasks, taskId, setTaskId}}>
-{children}
-  </TaskReadContext.Provider>
+interface TaskProviderProps {
+  children: ReactNode;
 }
 
-export {TaskReadContextProvider, TaskReadContext}
+export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
+  // Replace useState with useLocalStorage
+  const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
 
-
+  return (
+    <TaskReadContext.Provider value={{ tasks, setTasks }}>
+      {children}
+    </TaskReadContext.Provider>
+  );
+};
