@@ -1,10 +1,8 @@
 'use client'
 import Form from '@/components/elements/Form';
 import TaskList from '@/components/elements/TaskList';
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { TaskReadContext } from '@/context/TaskReadContext';
-import React, { useState, FormEvent, useContext } from 'react'
+import { TaskProvider, TaskReadContext } from '@/context/TaskReadContext';
+import React, { useContext } from 'react'
 
 interface Task {
   id: number;
@@ -12,17 +10,13 @@ interface Task {
 }
 
 const Page = (): React.ReactElement => {
-  const [tasks, setTasks] = useState<Task[]>([])
+  const taskContext = useContext(TaskReadContext);
   
   const deleteTask = (id: number): void => {
-    setTasks(tasks.filter(task => task.id !== id))
+    if (taskContext) {
+      taskContext.setTasks(taskContext.tasks.filter(task => task.id !== id));
+    }
   }
-
-  const editTask = (id: number): void =>{
-    
-  }
-
-  const tasksList =  useContext(TaskReadContext);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
@@ -30,19 +24,23 @@ const Page = (): React.ReactElement => {
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">
           To-Do List
         </h1>
-        <Form/>
+        <Form />
         <div className="mt-6 w-full max-w-md bg-white shadow-lg rounded-lg p-4">
           <h2 className="text-xl font-semibold mb-3 text-gray-800">Your Tasks</h2>
-          <TaskList tasks={tasksList?.tasks as Task[]} deleteTask={deleteTask}/>
+          {taskContext && <TaskList tasks={taskContext.tasks} deleteTask={deleteTask} />}
         </div>
       </div>
     </div>
   )
 }
 
-
-const props = {
-  tasks: {},
-  deleteTask: {}
+// Wrap the Page component with the TaskProvider
+const PageWithProvider = (): React.ReactElement => {
+  return (
+    <TaskProvider>
+      <Page />
+    </TaskProvider>
+  )
 }
-export default Page
+
+export default PageWithProvider;
