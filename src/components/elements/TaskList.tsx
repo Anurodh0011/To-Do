@@ -1,5 +1,4 @@
-'use client'
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { EditDialog } from './EditDialog';
 import { TaskReadContext } from '@/context/TaskReadContext';
@@ -9,24 +8,35 @@ interface TaskProps {
   text: string;
 }
 
+
+
 interface TaskListProps {
   tasks: TaskProps[];
   deleteTask: (id: number) => void;
 }
 
+
+
 const TaskList = ({ tasks, deleteTask }: TaskListProps) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false); // New state
   const taskContext = useContext(TaskReadContext);
+
+  useEffect(() => {
+    setIsClient(true); // Only set after client mounts
+  }, []);
 
   const deleteTaskForm = (id: number) => {
     if (taskContext) {
-      taskContext.setTasks(taskContext.tasks.filter((task) => id !== task.id));
+      taskContext?.setTasks(taskContext.tasks.filter((task) => id !== task.id));
     }
   };
 
   const handleClose = () => {
     setModalOpen(!modalOpen);
   };
+
+  if (!isClient) return null; // Avoid mismatched HTML during hydration
 
   return (
     <ul className="space-y-3">
@@ -36,7 +46,7 @@ const TaskList = ({ tasks, deleteTask }: TaskListProps) => {
             key={task.id}
             className="flex justify-between items-center bg-gray-100 p-3 rounded-md shadow-sm"
           >
-            <span className="text-gray-800">{task.text}</span>
+            <span className="text-gray-800">{task?.text}</span>
             <div className="space-x-1">
               <EditDialog id={task.id} handleClose={handleClose} />
               <Button
@@ -49,7 +59,7 @@ const TaskList = ({ tasks, deleteTask }: TaskListProps) => {
           </li>
         ))
       ) : (
-        <p className="text-gray-500 text-center">No tasks added yet.</p>
+        <li>No tasks available</li>
       )}
     </ul>
   );

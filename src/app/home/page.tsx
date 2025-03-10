@@ -54,7 +54,7 @@ const Page = (): React.ReactElement => {
                   key={task.id}
                   className="flex justify-between items-center bg-gray-100 p-3 rounded-md shadow-sm"
                 >
-                  <span className="text-gray-800">{task.text}</span>
+                  <span className="text-gray-800">{task?.text}</span>
                   <Button
                     onClick={() => deleteTask(task.id)}
                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
