@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ReactNode } from "react";
-import { TaskProvider } from "@/context/TaskReadContext";
+import {TaskReadContextProvider } from "@/context/TaskReadContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,9 +26,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <TaskProvider>
+        <TaskReadContextProvider>
           {children}
-        </TaskProvider>
+        </TaskReadContextProvider>
       </body>
     </html>
   );

@@ -1,21 +1,30 @@
 'use client'
 import Form from '@/components/elements/Form';
 import TaskList from '@/components/elements/TaskList';
-import { TaskProvider, TaskReadContext } from '@/context/TaskReadContext';
-import React, { useContext } from 'react'
+import {  TaskReadContext } from '@/context/TaskReadContext';
+import React, { useContext, useEffect } from 'react'
 
 interface Task {
   id: number;
   text: string;
 }
 
-const Page = (): React.ReactElement => {
+const Page = () => {
   const taskContext = useContext(TaskReadContext);
   
+  const [isMounted, setIsMounted] = React.useState<boolean | null >(false);
   const deleteTask = (id: number): void => {
     if (taskContext) {
       taskContext.setTasks(taskContext.tasks.filter(task => task.id !== id));
     }
+  }
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if(!isMounted){
+    return null;
   }
 
   return (
@@ -37,9 +46,7 @@ const Page = (): React.ReactElement => {
 // Wrap the Page component with the TaskProvider
 const PageWithProvider = (): React.ReactElement => {
   return (
-    <TaskProvider>
       <Page />
-    </TaskProvider>
   )
 }
 

@@ -19,7 +19,7 @@ interface TaskProviderProps {
   children: ReactNode;
 }
 
-export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
+export const TaskReadContextProvider: React.FC<TaskProviderProps> = ({ children }) => {
   // Replace useState with useLocalStorage
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
 
