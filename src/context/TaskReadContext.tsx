@@ -9,7 +9,7 @@ interface Task {
 
 interface TaskContextType {
   tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  setTasks: (value: Task[])=>void
 }
 
 // Create the context with a default value

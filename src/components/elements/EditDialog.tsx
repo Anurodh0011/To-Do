@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -21,7 +22,7 @@ export function EditDialog({id, handleClose}: {id: number, handleClose: ()=>void
     taskContext?.setTasks(
       taskContext?.tasks.map((task) =>
         task.id === id ? { ...task, text: value } : task
-      )
+      ) as any
     );
     setOpen(false);
   };
