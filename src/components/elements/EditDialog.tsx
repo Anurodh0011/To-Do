@@ -32,7 +32,7 @@ export function EditDialog({id, handleClose}: {id: number, handleClose: ()=>void
       <DialogTrigger asChild>
         <Button variant="outline" 
         onClick={() => setValue(taskContext?.tasks.find((task) => task.id === id)?.text! )}
-        className="bg-blue-500 hover:bg-blue-600 hover:text-white text-white font-semibold"
+        className="h-6 px-3 bg-blue-500 hover:bg-blue-600 hover:text-white text-white font-semibold rounded-lg"
         >
           Edit
         </Button>

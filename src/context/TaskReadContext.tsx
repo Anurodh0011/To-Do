@@ -12,7 +12,6 @@ interface TaskContextType {
   setTasks: (value: Task[])=>void
 }
 
-// Create the context with a default value
 export const TaskReadContext = createContext<TaskContextType | null>(null);
 
 interface TaskProviderProps {
@@ -20,7 +19,6 @@ interface TaskProviderProps {
 }
 
 export const TaskReadContextProvider: React.FC<TaskProviderProps> = ({ children }) => {
-  // Replace useState with useLocalStorage
   const [tasks, setTasks] = useLocalStorage<Task[]>('tasks', []);
 
   return (
